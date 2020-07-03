@@ -27,7 +27,7 @@ STON offers three main features:
 - JSON backward compatible: Additionally, the current STON implementation is backward compatible with standard JSON.
 
 Limitations of STON are that in its current form it cannot serialize a number of objects that are more system or
-implementation than domain oriented, such as Blocks and classes. STON is also less efficient than a binary encoding such as Fuel.
+implementation than domain oriented, such as Blocks and classes. STON is also less efficient than a binary encoding such as Fuel. ${footnote:note=This is a footenote}$
 
 !!! Loading STON
 
@@ -37,25 +37,31 @@ The project contains a full complement of unit tests.
 STON is hosted on SmalltalkHub. To load STON, execute the following code snippet:
 
 [[[
-Gofer new
-   smalltalkhubUser: 'SvenVanCaekenberghe' project: 'STON';
-   configurationOf: 'Ston';
-   loadStable.
+Metacello new
+   baseline: 'Ston';
+   repository: 'github://svenvc/ston/repository';
+   load.
+	
 ]]]
 
-You can also add the following repository to your package browser:
+!!! If you want to depend on it
 
-[[[
-MCHttpRepository
-   location: 'http://smalltalkhub.com/mc/SvenVanCaekenberghe/STON/main'
-   user: ''
-   password: ''
-]]]
+Add the following code to your Metacello baseline or configuration
+
+```
+spec 
+   baseline: 'Ston' 
+   with: [ spec repository: 'github://svenvc/ston/repository' ]
+```
+
 
 A Gemstone (*http://gemtalksystems.com/products/*) port implemented by
 Dale Henrichs is available at *https://github.com/dalehenrich/ston* .
 
-!!! Serializing and Materializing Objects
+
+
+
+!! Serializing and Materializing Objects
 
 We now show how to serialize and materialize objects, starting with a simple rectangle and then continuing with more complex objects.
 
