@@ -27,7 +27,7 @@ STON offers three main features:
 - JSON backward compatible: Additionally, the current STON implementation is backward compatible with standard JSON.
 
 Limitations of STON are that in its current form it cannot serialize a number of objects that are more system or
-implementation than domain oriented, such as Blocks and classes. STON is also less efficient than a binary encoding such as Fuel. ${footnote:note=This is a footenote}$
+implementation than domain oriented, such as Blocks and classes. STON is also less efficient than a binary encoding such as Fuel. 
 
 !!! Loading STON
 
