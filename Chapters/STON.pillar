@@ -657,6 +657,45 @@ instead be converted to the newline convention chosen, see ==newLine:==. The def
 
 Any CR, LF or CRLF inside any String will no longer be written as ==\\r==, ==\\n== or ==\\r\\n== but all as CRLF, a normal EOL.
 
+!!! About Storing Block Closures
+
+This is a recurring question. BlockClosures are way too general and powerful to be serialised. That is why serialising BlockClosures is not supported in STON.
+The code inside a block can refer to and even affect state outside the block. Furthermore the return operator is quite special as it returns from some outer context.
+
+A subset of BlockClosures are those that are clean.
+These do not close over other variables, nor do they contain a return.
+By using their source code representation, it is possible to serialise/materialise them.
+
+You can try this by adding the following methods:
+
+[[[
+BlockClosure >> stonOn: stonWriter
+ self isClean
+   ifTrue: [ stonWriter writeObject: self listSingleton: self printString ]
+   ifFalse: [ stonWriter error: 'Only clean blocks can be serialized' ]
+]]]
+
+[[[
+BlockClosure >>stonContainSubObjects
+ ^ false
+]]]
+
+[[[
+BlockClosure clas >> fromSton: stonReader
+ ^ self compilerClass new 
+     source: stonReader parseListSingleton; 
+     evaluate
+]]]
+
+With these additions you can do the following:
+
+[[[
+STON fromString: (STON toString: [ :x :y | x + y ]).
+]]]
+
+Note that the actual class name depends on the Pharo version (BlockClosure in Pharo 7, FullBlockClosure in Pharo 9 and maybe soon CleanBlockClosure - Marcus is working on that last one and that would be very cool because it would say exactly what it it).
+
+
 !!! Conclusion
 STON is a practical and simple text-based object serializer based on
 JSON (see also Chapter *NeoJSON>../NeoJSON/NeoJSON.pillar@cha:JSON*).
